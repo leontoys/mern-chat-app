@@ -1,5 +1,6 @@
 import User from "../models/user.model.js"
 import bcrypt from "bcryptjs";
+import generateTokenAndSetCookie from "../utils/generateToken.js";
 
 export const signup = async (req, res) => {
     try {
@@ -30,7 +31,10 @@ export const signup = async (req, res) => {
     profilePic: gender === "male" ? boyProfilePic : girlProfilePic,
   });
         
-  if (newUser) {
+      if (newUser) {
+        //generate JWT token
+        generateTokenAndSetCookie(newUser._id,res)//will add a cookie in the response
+
      await newUser.save();
 
      res.status(201).json({
@@ -51,8 +55,31 @@ export const signup = async (req, res) => {
 
 }
 
-export const login = (req, res) => {
-    res.send("login user")
+export const login = async (req, res) => {
+    try {
+      const { userName, password } = req.body
+      
+      const user = await User.findOne({ userName })
+      
+      const isPasswordCorrect = await bcrypt.compare(password, user?.password || "")
+      
+      if (!isPasswordCorrect || !user) {
+        res.status(400).json({message:'Invalid credentials'})
+      }
+
+      generateTokenAndSetCookie(user._id, res)
+      
+      res.status(200).json({
+        _id: user._id,
+        profilePic: user.profilePic,
+        fullName: user.fullName,
+        userName : user.userName
+      })
+
+    } catch (error) {
+      console.log('Error in login controller', error)
+      res.status(500).json({message:'Internal server error'})
+    }
 }
 
 export const logout = (req, res) => {
