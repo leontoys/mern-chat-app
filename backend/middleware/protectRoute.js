@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken"
 import User from "../models/user.model"
 
-const protectRoute = (req, res, next) => {
+export const protectRoute = (req, res, next) => {
     
     //first get the token from the cookies 
     //for this we need cookie parser to be added as middleware in server.js
