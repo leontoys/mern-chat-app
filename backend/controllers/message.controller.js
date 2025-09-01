@@ -32,18 +32,36 @@ export const sendMessage = async (req, res) => {
         if (newMessage) {
         conversation.messages.push(newMessage._id);            
         }
-
-        //await newMessage.save()//to save the message to db
+       //await newMessage.save()//to save the message to db
         //await conversation.save()//to save conversation to db
         //Parallel processign
         await Promise.all([newMessage.save(), conversation.save()])//so it will call 
         //two methods in parallel
-
-        res.status(201).json(newMessage)
-        
-
+        res.status(201).json(newMessage)       
     } catch (error) {
         console.log('Error in message controller', error)
+        res.status(500).json({message:'Internal server error'})
+    }
+}
+
+export const getMessages = async (req, res) => {
+    try {
+
+        const { id: receiverId } = req.params
+        const senderId = req.user._id
+        console.log(senderId,receiverId)
+        const conversation = await Conversation.findOne({
+            participants: { $all : [senderId, receiverId] }
+        }).populate("messages")//this will get the messages from messages collection
+
+        if (!conversation) {
+            return res.status(200).json([])
+        }
+
+        res.status(200).json(conversation.messages)
+        
+    } catch (error) {
+        console.error('error in get messages', error)
         res.status(500).json({message:'Internal server error'})
     }
 }
