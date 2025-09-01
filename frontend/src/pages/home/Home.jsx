@@ -1,5 +1,5 @@
 import React from 'react'
-import SideBar from './SideBar'
+import SideBar from '../../components/sidebar/SideBar'
 
 const Home = () => {
   return (
