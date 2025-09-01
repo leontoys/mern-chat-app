@@ -1,8 +1,15 @@
 import React from 'react'
+import Conversation from './Conversation'
 
 const Conversations = () => {
   return (
-    <div></div>
+    <div>
+      <Conversation />
+      <Conversation />
+      <Conversation />
+      <Conversation />
+      <Conversation />
+    </div>
   )
 }
 
