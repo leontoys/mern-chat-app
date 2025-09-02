@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import GenderCheckbox from './GenderCheckbox'
 import { Link } from 'react-router-dom'
-import input from 'daisyui/components/input'
 
 const SignUp = () => {
 
@@ -12,6 +11,10 @@ const SignUp = () => {
     confirmPassword: "",
     gender:""
   })
+
+  const handleCheckBoxChange = (gender) => {
+    setInputs({...inputs,gender})
+  }
   
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -56,7 +59,7 @@ const SignUp = () => {
               value={inputs.confirmPassword} onChange={(e) => setInputs({ ...inputs, confirmPassword: e.target.value })} />
           </div>
 
-          <GenderCheckbox/>
+          <GenderCheckbox selectedGener={inputs.gender} onCheckBoxChange={handleCheckBoxChange}/>
 
           <Link to='/login' className='text-sm hover:underline hover:text-blue-600 mt-2 inline-block'>
             Already have an account?
