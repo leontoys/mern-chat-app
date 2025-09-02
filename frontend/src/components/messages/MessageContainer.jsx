@@ -13,7 +13,7 @@ const MessageContainer = () => {
           <span className='text-gray-900 font-bold'>John Doe</span>
         </div>
         <Messages />
-        {/* <MessageInput/> */}
+        <MessageInput/>
       </>
     </div>
   )
