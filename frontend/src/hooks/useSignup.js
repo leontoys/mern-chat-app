@@ -25,7 +25,7 @@ const handleInput = (fullName, userName, password, confirmPassword, gender) => {
 
 const useSignup = () => {
 
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
     const {setAuthUser} = useAuthContext()
     
     const signup = async ({fullName,userName,password,confirmPassword,gender}) => {
@@ -34,6 +34,7 @@ const useSignup = () => {
 
         if (!success) return
         
+        setLoading(true)
         try {
 
             const response = await fetch("/api/auth/signup", {

@@ -33,7 +33,7 @@ const SignUp = () => {
           Sign Up
           <span className='text-blue-500'> Chat App</span>
         </h1>
-        <form >
+        <form onSubmit={handleSubmit} >
           <div>
             <label className='label p-2'>
               <span className='text-base label-text'>Full name</span>
@@ -69,7 +69,9 @@ const SignUp = () => {
             Already have an account?
           </Link>
           <div>
-            <button className='btn btn-block btn-sm mt-2'onClick={handleSubmit}>Sign Up</button>
+            <button className='btn btn-block btn-sm mt-2 border border-slate-700' disabled={loading}>
+              {loading?<span className='loading loading-spinner'></span>:"Sign Up"}
+            </button>
           </div>
         </form>
       </div>
