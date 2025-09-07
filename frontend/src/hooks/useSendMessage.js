@@ -26,7 +26,7 @@ const useSendMessage = () => {
             }
 
             //update global state
-            setMessages({...messages,message})
+            setMessages([...messages,data])
 
         } catch (error) {
             toast.error(error.message)

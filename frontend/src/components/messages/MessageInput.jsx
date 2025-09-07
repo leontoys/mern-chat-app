@@ -10,6 +10,7 @@ const MessageInput = () => {
     e.preventDefault()
     await sendMessage(message)
     setMessage("")
+    console.log("message-posted successfully")
   }
 
   return (
@@ -19,7 +20,7 @@ const MessageInput = () => {
         border-gray-600 text-white' placeholder='Send a message'
         value={message} onChange={(e)=>setMessage(e.target.value)}/>
         <button type='submit' className='absolute inset-y-0 end-0 flex items-center pe-3'>
-          <BsSend/>
+          {loading ? <div className='loading loading-spinner'></div> : <BsSend />}
         </button>
       </div>
     </form>
