@@ -1,33 +1,20 @@
-// import { createContext, useEffect, useState } from "react";
-// import { useAuthContext } from "./AuthContext";
-// import { io } from "socket.io-client";
+import { createContext, useState, useEffect, useContext } from "react";
+import { useAuthContext } from "./AuthContext";
+import io from "socket.io-client";
 
-// export const SocketContext = createContext()
+const SocketContext = createContext();
 
-// export const SocketContextProvider = (props) => {
+export const useSocketContext = () => {
+    return useContext(SocketContext);
+};
 
-//     const { authUser } = useAuthContext()
-//     const [socket, setSocket] = useState(null)
-//     const [onlineUsers,setOnlineUsers] = useState([])
+export const SocketContextProvider = ({ children }) => {
+    const [socket, setSocket] = useState(null);
+    const [onlineUsers, setOnlineUsers] = useState([]);
+    const { authUser } = useAuthContext();
 
-//     // useEffect(() => {        
-//     //     if (authUser) {
-//     //         //if there is an authenticated user create socket
-//     //         const socket = io('http://localhost:5000') //backend url 
-//     //         setSocket(socket)//update state
-//     //         return ()=>socket.close() //clean up function for unmounting
-//     //     } else {
-//     //         if (socket) { //close existing socket connection if no authenticated user
-//     //             socket.close()
-//     //             setSocket(null)
-//     //         }
-//     //     }
-
-//     // },[])
-
-//     return (
-//         <SocketContextProvider value={{socket,onlineUsers}}>
-//             {props.children}
-//         </SocketContextProvider>
-//     )
-// }
+    return(
+    <SocketContext.Provider value={{ socket, onlineUsers }}>
+        {children}
+    </SocketContext.Provider>)
+};
