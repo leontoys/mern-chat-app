@@ -13,6 +13,18 @@ export const SocketContextProvider = ({ children }) => {
     const [onlineUsers, setOnlineUsers] = useState([]);
     const { authUser } = useAuthContext();
 
+    useEffect(() => {
+        if (authUser) {
+            const socket = io("http://localhost:5000")
+            setSocket(socket)
+
+            return ()=>socket.close()
+        } else {
+            socket.close()
+            setSocket(null)
+        }
+    },[])
+
     return(
     <SocketContext.Provider value={{ socket, onlineUsers }}>
         {children}
