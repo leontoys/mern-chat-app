@@ -5,7 +5,6 @@ import express from "express";
 const app = express()
 
 const server = http.createServer(app)
-
 const io = new Server(server, {
   cors: {
     origin: ["http://localhost:5173"],
@@ -13,12 +12,24 @@ const io = new Server(server, {
   },
 });
 
-io.on("connection", (socket) => {
-    console.log("user connected", socket.id)
+const userSocketMap = {}
 
-//listening to event
+io.on("connection", (socket) => {
+  console.log("user connected", socket.id)
+  
+  //read from frontend query
+  const userId = socket.handshake.query.userId
+
+  if (userId != "undefined") userSocketMap[userId] = socket.id
+  
+  //send events to all connected clients
+  io.emit("getOnlineUsers",Object.keys(userSocketMap))
+
+//listening to event from the front end
     socket.on("disconnect", () => {
-        console.log("user disconnected",socket.id)
+      console.log("user disconnected", socket.id)
+      delete userSocketMap[userId]
+      io.emit("getOnlineUsers",Object.keys(userSocketMap))
     })
 })
 

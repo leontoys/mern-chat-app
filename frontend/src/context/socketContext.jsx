@@ -4,6 +4,7 @@ import io from "socket.io-client";
 
 const SocketContext = createContext();
 
+//to use context in other components
 export const useSocketContext = () => {
     return useContext(SocketContext);
 };
@@ -15,13 +16,25 @@ export const SocketContextProvider = ({ children }) => {
 
     useEffect(() => {
         if (authUser) {
-            const socket = io("http://localhost:5000")
+            const socket = io("http://localhost:5000", {
+                query: {
+                    userId: authUser._id //pass the authorised user's id to the backend
+                    //with query parameter userId
+                }
+            })
             setSocket(socket)
+
+            socket.on("getOnlineUsers", (users) => {
+                setOnlineUsers(users)
+            })
 
             return ()=>socket.close()
         } else {
-            socket.close()
-            setSocket(null)
+            if (socket) {
+                socket.close()
+                setSocket(null)                
+            }
+
         }
     },[])
 
