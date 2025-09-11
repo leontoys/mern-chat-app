@@ -13,11 +13,11 @@ export const SocketContextProvider = ({ children }) => {
     const [socket, setSocket] = useState(null);
     const [onlineUsers, setOnlineUsers] = useState([]);
     const { authUser } = useAuthContext();
-    const uri = "https://mern-chat-app-nznn.onrender.com/" //"http://localhost:5000"
+    const uri = "https://mern-chat-app-nznn.onrender.com" //"http://localhost:5000"
 
     useEffect(() => {
         if (authUser) {
-            const socket = io(`${uri}`, {
+            const socket = io("https://mern-chat-app-nznn.onrender.com", {
                 query: {
                     userId: authUser._id //pass the authorised user's id to the backend
                     //with query parameter userId
